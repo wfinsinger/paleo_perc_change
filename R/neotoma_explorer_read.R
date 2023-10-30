@@ -1,4 +1,4 @@
-## Read dataset saved with NeotomaExplorer
+## Read a dataset saved with NeotomaExplorer
 
 nxpl_read <- function(dset_name = NULL, dset_path = NULL,
                       age_row = NULL, first_datarow = NULL) {
@@ -6,8 +6,8 @@ nxpl_read <- function(dset_name = NULL, dset_path = NULL,
   ## Set variables
   # rm(list = ls())
   # dset_name = "AVG0702"
-  # dset_path = "./data_in/AVG0702_diatom_counts.csv"
-  # age_row = 5
+  # dset_path = "../data_raw/AVG0702_diatom_counts.csv"
+  # age_row = 6
   # first_datarow = 9
 
 
@@ -15,7 +15,7 @@ nxpl_read <- function(dset_name = NULL, dset_path = NULL,
   d <- read.csv(dset_path, nrows = first_datarow - 1, header = T)
 
 
-  ## Loads the data (pollen counts) -------------------------------------------
+  ## Loads the data (the counts) ----------------------------------------------
   taxa_counts <- read.csv(dset_path, skip = first_datarow, header = F)
 
 

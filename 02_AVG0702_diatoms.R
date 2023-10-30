@@ -15,7 +15,6 @@ library(RRatepol)
 ### R functions from source ---------------------------------------------------
 
 ## New R functions
-source("./R/neotoma_explorer_read.r")
 source("./R/neotoma_explorer_perc.r")
 
 ## Modified from RRatepol v1.2.1
@@ -148,7 +147,6 @@ dset_roc <-
                             time_standardisation = time.standardisation,
                             verbose = F)
 
-
 dset_peak <-
   RRatepol::fc_detect_peak_points(dset_roc, sel_method = "threshold")
 
@@ -156,6 +154,7 @@ RRatepol::plot_roc(dset_peak, age_threshold = NULL,
                  roc_threshold = max(dset_roc$ROC),
                  peaks = TRUE,
                  trend = "threshold")
+dev.off()
 
 pdf("./figures_out/Figure_3b_RoC_AVG_diatoms.pdf")
 fc_plot_RoC_seq4(dset_peak, age_threshold = NULL, age_scale = "CE",
@@ -167,10 +166,10 @@ dev.off()
 
 
 # Output - save data ---------------------------------------------------------
-write.csv(di_tp_exp, "./data_out/02_di_tp.csv",
-          row.names = FALSE)
-write.csv(dset_perc$list_ages$ages, "./data_out/02_di_tp_ages.csv",
-          row.names = FALSE)
+# write.csv(di_tp_exp, "./data_out/02_di_tp.csv",
+#           row.names = FALSE)
+# write.csv(dset_perc$list_ages$ages, "./data_out/02_di_tp_ages.csv",
+#           row.names = FALSE)
 
 save.image("./data_out/02_AVG0702_diatoms.rda")
 

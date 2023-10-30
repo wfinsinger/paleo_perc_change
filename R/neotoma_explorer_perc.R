@@ -12,7 +12,7 @@ nxpl_perc <- function(d_in = NULL, d_sum = NULL, taxa_excl = NULL, plotit = T,
 
 
   ## Load libraries -----------------------------------------------------------
-  library(dplyr)
+  require(dplyr)
 
 
   ## Get data -----------------------------------------------------------------

@@ -8,7 +8,6 @@ rm(list = ls())
 ### Libraries -----------------------------------------------------------------
 library(readxl)
 library(rioja)
-library(riojaPlot)
 library(dplyr)
 #devtools::install_github("HOPE-UIB-BIO/R-Ratepol-package")
 library(RRatepol)
@@ -133,7 +132,7 @@ dset_harm$perc <- dset_perc$perc %>%
 rowSums(dset_harm$perc[ ,2:dim(dset_harm$perc)[2]])
 
 
-##### Plot harmonized percentages ---------------------------------------------
+##### Check harmonized percentages --------------------------------------------
 rioja::strat.plot(dset_harm$perc[ ,2:30],
                   yvar = dset$list_ages$ages$age,
                   scale.percent = TRUE,
@@ -200,10 +199,10 @@ smooth.age.range <- max(dset_resol, na.rm = T) + 1 # there's at least one data p
 DC.metric <- "chisq"  # as of Mottl et al. (2021)
 Working.Units <- "MW"  # as of Mottl et al. (2021)
 bin.size <- max(dset_resol, na.rm = T) + 1 # bin.size <- 50 in of Mottl et al. (2021)
-Number.of.shifts <- 4  # as of Mottl et al. (2021)
+Number.of.shifts <- 5  # as of Mottl et al. (2021)
 bin.selection <- "random"
 standardise.user <- TRUE
-N.individuals <- n_indiv_min # here 195 pollen.
+N.individuals <- n_indiv_min # here = 195 pollen grains counted per sample.
 n.rand <- 999 # n.rand <- 1000 in Mottl et al. (2021) !!
 time.standardisation <- 50
 
@@ -230,7 +229,6 @@ dset_roc <-
                          time_standardisation = time.standardisation,
                          verbose = F)
 
-
 dset_roc_peak <-
   RRatepol::detect_peak_points(dset_roc, sel_method = "threshold")
 
@@ -238,9 +236,9 @@ RRatepol::plot_roc(dset_roc_peak, age_threshold = NULL,
                    roc_threshold = max(dset_roc$ROC),
                    peaks = TRUE,
                    trend = "threshold")
+dev.off()
 
-
-pdf("./figures_out/Figure_3a_RoC_pollen_nshift4.pdf")
+pdf("./figures_out/Figure_3a_RoC_pollen_nshift5.pdf")
 fc_plot_RoC_seq4(dset_roc_peak, age_threshold = NULL, age_scale = "CE",
                  Roc_threshold = max(dset_roc$ROC),
                  Peaks = TRUE,
