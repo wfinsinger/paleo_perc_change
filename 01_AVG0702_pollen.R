@@ -186,7 +186,7 @@ trsh$up <- trsh[ ,2]
 trsh$dw <- trsh[ ,2]
 
 
-# Calculate RoC with R-Ratepol ------------------------------------------------
+# Calculate compositional RoC with R-Ratepol ----------------------------------
 
 n_indiv_min <- min(rowSums(dset_harm$counts[2:dim(dset_harm$counts)[2]]))
 
