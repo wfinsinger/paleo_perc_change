@@ -73,16 +73,26 @@ if (!file.exists("AVG-TP-LOG.csv")) {
 di_tp <- read.csv("AVG-TP-LOG.csv")
 
 ## Modify di_tp:
+di_tp <- dplyr::rename(di_tp, "depth" = "Depth..cm.")
+di_tp <- dplyr::rename(di_tp, "CE_years" = "Age.yrs.AD")
 di_tp <- dplyr::rename(di_tp, "TP (log)" = "TP")
-di_tp2 <- dplyr::select(di_tp, "Age.yrs.AD", "TP (log)", "SSE.down", "SSE.up")
-di_tp2 <- di_tp2[complete.cases(di_tp2), ] # check for occurrence of NA values
+# check for occurrence of NA values
+if (sum(!complete.cases(di_tp)) > 0) {
+  print("Warning: some rows contain missing values")
+}
 
-
+### Check depths and ages in the data sets ------------------------------------
+if (all(di_tp$depth == dset_diatoms$list_ages$ages$depth) == FALSE) {
+  print("Warning: depth values are different in the two data sets")
+}
+if (all(di_tp$CE_years == dset_diatoms$list_ages$ages$age) == FALSE) {
+  print("Warning: age values are different in the two data sets")
+}
 
 # Write output ----------------------------------------------------------------
 save(harm, file = "../data_in/harm.RData")
 save(dset_pollen, file = "../data_in/dset_pollen.RData")
-save(dset_diatoms, file = "../data_in/dset-diatoms.RData")
-save(di_tp2, file = "../data_in/di_tp2.RData")
+save(dset_diatoms, file = "../data_in/dset_diatoms.RData")
+save(di_tp, file = "../data_in/di_tp.RData")
 
 # END -------------------------------------------------------------------------

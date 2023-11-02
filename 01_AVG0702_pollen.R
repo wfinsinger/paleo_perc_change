@@ -6,7 +6,6 @@ rm(list = ls())
 # Load libraries & tools ------------------------------------------------------
 
 ### Libraries -----------------------------------------------------------------
-library(readxl)
 library(rioja)
 library(dplyr)
 #devtools::install_github("HOPE-UIB-BIO/R-Ratepol-package")
@@ -40,17 +39,21 @@ load("./data_in/harm.RData")
 ### Pollen and spores counts, with sample ages --------------------------------
 load("./data_in/dset_pollen.RData")
 
+dset <- dset_pollen
+rm(dset_pollen)
 
 
 # Filter data -----------------------------------------------------------------
 
-dset <- dset_pollen
-rm(dset_pollen)
 
 ## Remove samples with pollen sums < 200 terrestrial pollen grains
-p_counts_sum <- rowSums(dset$counts[2:dim(dset$counts)[2]])
+p_counts <- dset$counts %>% dplyr::select(which(
+    dset$taxa$element == "pollen" | dset$taxa$element == "spore"))
+p_counts_sum <- rowSums(p_counts[2:dim(p_counts)[2]])
+summary(p_counts_sum)
 ind_sample_remove <- which(p_counts_sum < 200)
 
+if (length(ind_sample_remove) > 0) {
 dset$list_ages$ages <- dset$list_ages$ages[-ind_sample_remove, ]
 dset$list_ages$age_range <- dset$list_ages$age_range[-ind_sample_remove, ]
 dset$labo <- dset$labo[-ind_sample_remove + 5, ]
@@ -58,8 +61,12 @@ dset$counts <- dset$counts[-ind_sample_remove, ]
 rownames(dset$list_ages$ages) <- NULL
 rownames(dset$list_ages$age_range) <- NULL
 rownames(dset$counts) <- NULL
+}
 
-p_counts_sum <- rowSums(dset$counts[2:dim(dset$counts)[2]])
+p_counts <- dset$counts %>% dplyr::select(which(
+  dset$taxa$element == "pollen"))
+p_counts_sum <- c(NA, rowSums(p_counts[2:dim(p_counts)[2]]))
+summary(p_counts_sum)
 
 
 # Plot resolution of the record -----------------------------------------------
@@ -250,12 +257,12 @@ dev.off()
 
 
 # # Output - save data --------------------------------------------------------
-# write.csv(dset_harm$grps,
-#           "./data_out/01_AVG0702_trsh.csv",
-#           row.names = FALSE)
-# write.csv(dset_harm$list_ages$ages,
-#           "./data_out/01_AVG0702_trsh_ages.csv",
-#           row.names = FALSE)
-save.image("./data_out/01_AVG0702_pollen.rda")
+dset_harm_ages <- dset_harm$list_ages$ages
+dset_harm_grps <- dset_harm$grps
+
+save(dset_harm_grps, file = "./data_out/01_AVG0702_trsh.rds")
+save(dset_harm_ages, file = "./data_out/01_AVG0702_trsh_ages.rds")
+
+# save.image("./data_out/01_AVG0702_pollen.rda")
 
 ## END R script 01 ------------------------------------------------------------

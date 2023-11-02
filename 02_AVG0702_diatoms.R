@@ -36,7 +36,7 @@ load("./data_in/dset_diatoms.RData")
 dset <- dset_diatoms
 
 ##### Load AVG0702 DI-TP ------------------------------------------------------
-load("./data_in/di_tp2.RData")
+load("./data_in/di_tp.RData")
 
 
 
@@ -97,16 +97,11 @@ rioja::strat.plot(d_perc,
 dev.off()
 
 
-# Prepare data.frame for output -----------------------------------------------
-di_tp_exp <- data.frame(dset_perc$counts$sample_id,
-                        di_tp2$`TP (log)`)
-names(di_tp_exp) <- c("sample_id", "di_tp")
-
-
-
 # Calculate RoC with RRatepol -------------------------------------------------
 
+## Check value of smallest count sum in the samples of the data set:
 n_indiv_min <- min(rowSums(dset$counts[2:dim(dset$counts)[2]]))
+
 
 ### RRatepol settings ---------------------------------------------------------
 age.uncertainty <- NULL
@@ -161,16 +156,20 @@ fc_plot_RoC_seq4(dset_peak, age_threshold = NULL, age_scale = "CE",
                  Roc_threshold = max(dset_roc$ROC),
                  Peaks = TRUE,
                  trend = "threshold",
-                 cvar = di_tp2, cvar_col = "blue", aside = TRUE)
+                 cvar = di_tp[ ,3:6], cvar_col = "blue", aside = TRUE)
 dev.off()
 
 
 # Output - save data ---------------------------------------------------------
-# write.csv(di_tp_exp, "./data_out/02_di_tp.csv",
-#           row.names = FALSE)
-# write.csv(dset_perc$list_ages$ages, "./data_out/02_di_tp_ages.csv",
-#           row.names = FALSE)
 
-save.image("./data_out/02_AVG0702_diatoms.rda")
+di_tp_exp <- data.frame(dset_perc$counts$sample_id, di_tp$`TP (log)`)
+names(di_tp_exp) <- c("sample_id", "di_tp")
+save(di_tp_exp, file = "./data_out/02_di_tp.rds")
+
+dset_perc_ages <- dset_perc$list_ages$ages
+save(dset_perc_ages, file = "./data_out/02_di_tp_ages.rds")
+
+# save.image("./data_out/02_AVG0702_diatoms.rda")
+
 
 ## END R script 02 ------------------------------------------------------------

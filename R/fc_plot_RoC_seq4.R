@@ -1,4 +1,14 @@
-## WF: Modified script such that age scale goes from age_threshold to min(age)
+## Plot the Rate-of-Change sequence
+##
+## Modified from the "fc_plot_RoC_sequence()" function that is included in the
+## RRatepol R package. The modified function allows plotting the rate-of-change
+## record along another ecological indicator record (identified with the
+## argument "cvar"), and extends the age scale from the selected age_threshold
+## to the min(age).
+## It also allows setting the age scale units, with two options for the
+## argument "age_scale":
+##  age_scale = "CE" (for Common Era years), and
+##  age_scale = "calBP" (for calibrated radiocarbon years).
 
 
 fc_plot_RoC_seq4 <- function(data_source, age_threshold = NULL, age_scale = NULL,

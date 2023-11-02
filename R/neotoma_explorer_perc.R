@@ -1,16 +1,6 @@
 nxpl_perc <- function(d_in = NULL, d_sum = NULL, taxa_excl = NULL, plotit = T,
                       x_lim = NULL, y_lim = c(0,100)) {
 
-  # d_in = dset
-  # d_sum = "terrestrial"
-  # # d_sum = NULL
-  # taxa_excl = "Humulus/Cannabis-type"
-  # # taxa_excl = c("Abies", "Humulus/Cannabis-type")
-  # # taxa_excl = NULL
-  # plotit = T
-  # x_lim = c(150, -60)
-
-
   ## Load libraries -----------------------------------------------------------
   require(dplyr)
 

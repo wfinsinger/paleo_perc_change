@@ -21,18 +21,24 @@ library(dplyr)
 source("./R/change_perc_baseline.r")
 source("./R/change_perc_stepwise.r")
 
+
 # Load datasets ---------------------------------------------------------------
-
-trsh <- read.csv("./data_out/01_AVG0702_trsh.csv")
+load("./data_out/01_AVG0702_trsh.rds")
+trsh <- dset_harm_grps
 trsh2 <- dplyr::select(trsh, sample_id, sum_trsh)
+rm(dset_harm_grps, trsh)
 
-trsh_ages <- read.csv("./data_out/01_AVG0702_trsh_ages.csv")
+load("./data_out/01_AVG0702_trsh_ages.rds")
+trsh_ages <- dset_harm_ages
+rm(dset_harm_ages)
 
-tp <- read.csv("./data_out/02_di_tp.csv")
-tp2 <- dplyr::select(.data = tp, sample_id, di_tp)
+load("./data_out/02_di_tp.rds")
+tp <- di_tp_exp
+rm(di_tp_exp)
 
-tp_ages <- read.csv("./data_out/02_di_tp_ages.csv")
-
+load("./data_out/02_di_tp_ages.rds")
+tp_ages <- dset_perc_ages
+rm(dset_perc_ages)
 
 
 ## Calculate percentage change per time interval (here, a decade) -------------
@@ -81,7 +87,7 @@ trsh_stepwise <- change_perc_stepwise(data_source_ecolind = trsh2,
 
 ## DI-TP % change per decade (with whiskers and standardized):
 pdf("./figures_out/Figure_3d_ditp_stepwise.pdf", height = 5)
-ditp_stepwise <- change_perc_stepwise(data_source_ecolind = tp2,
+ditp_stepwise <- change_perc_stepwise(data_source_ecolind = tp,
                                       data_source_ages = tp_ages,
                                       ecolind_name = "DI_TP",
                                       age_scale = "CE years",
@@ -92,7 +98,7 @@ dev.off()
 
 
 ## DI-TP % change per decade (w/o whiskers and standardized):
-ditp_stepwise <- change_perc_stepwise(data_source_ecolind = tp2,
+ditp_stepwise <- change_perc_stepwise(data_source_ecolind = tp,
                                       data_source_ages = tp_ages,
                                       ecolind_name = "DI_TP",
                                       age_scale = "CE years",
@@ -136,7 +142,7 @@ dev.off()
 
 ## Di-TP % change relative to 1800-1899 CE yrs:
 pdf("./figures_out/Figure_3f_ditp_1800-1899.pdf", height = 5)
-ditp_baseline <- change_perc_baseln(data_source_ecolind = tp2,
+ditp_baseline <- change_perc_baseln(data_source_ecolind = tp,
                                           data_source_ages = tp_ages,
                                           baseln_interval = c(1800, 1899),
                                           baseln_estimated = NULL,
