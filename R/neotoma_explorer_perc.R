@@ -1,5 +1,11 @@
+#' Calculate percentages for palaeoecological assemblage data
+#'
+#' @details requires the output from the nxpl_read() function.
+#'
+#' @author Walter Finsinger
+
 nxpl_perc <- function(d_in = NULL, d_sum = NULL, taxa_excl = NULL, plotit = T,
-                      x_lim = NULL, y_lim = c(0,100)) {
+                      x_lim = NULL, y_lim = c(0, 100)) {
 
   ## Load libraries -----------------------------------------------------------
   require(dplyr)

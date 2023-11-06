@@ -48,6 +48,8 @@ dset_pollen$AgeUnits <- "CE years"
 
 
 ### Diatom data ------------------------------------------------
+## From: Finsinger et al. (2006)
+##  https://doi.org/10.1007/s10933-006-0002-x)
 ## Source: contributor
 
 if (!file.exists("AVG0702_diatom_counts.csv")) {
@@ -65,6 +67,8 @@ dset_diatoms$AgeUnits <- "CE years"
 
 
 ##### Load AVG0702 DI-TP ------------------------------------------------------
+## From: Finsinger et al. (2006)
+##  https://doi.org/10.1007/s10933-006-0002-x)
 ## Source: contributor
 
 if (!file.exists("AVG-TP-LOG.csv")) {

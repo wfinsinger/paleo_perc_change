@@ -1,5 +1,5 @@
 
-# load("./data_out/02_AVG0702_diatoms.rda")
+# load("./data_out/02_AVG0702_RoC_diatoms.rda")
 
 rm(list = ls())
 
@@ -169,7 +169,7 @@ save(di_tp_exp, file = "./data_out/02_di_tp.rds")
 dset_perc_ages <- dset_perc$list_ages$ages
 save(dset_perc_ages, file = "./data_out/02_di_tp_ages.rds")
 
-# save.image("./data_out/02_AVG0702_diatoms.rda")
+save.image("./data_out/02_AVG0702_RoC_diatoms.rda")
 
 
 ## END R script 02 ------------------------------------------------------------

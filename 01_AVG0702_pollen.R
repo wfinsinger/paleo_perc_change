@@ -1,5 +1,5 @@
 
-# load("./data_out/01_AVG0702_pollen.rda")
+# load("./data_out/01_AVG0702_RoC_pollen.rda")
 
 rm(list = ls())
 
@@ -263,6 +263,6 @@ dset_harm_grps <- dset_harm$grps
 save(dset_harm_grps, file = "./data_out/01_AVG0702_trsh.rds")
 save(dset_harm_ages, file = "./data_out/01_AVG0702_trsh_ages.rds")
 
-# save.image("./data_out/01_AVG0702_pollen.rda")
+save.image("./data_out/01_AVG0702_RoC_pollen.rda")
 
 ## END R script 01 ------------------------------------------------------------

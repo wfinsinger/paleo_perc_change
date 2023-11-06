@@ -1,15 +1,9 @@
-## Read a dataset saved with NeotomaExplorer
+#' Read a dataset saved as *.csv file using the NeotomaExplorer App
+#'
+#' @author Walter Finsinger
 
 nxpl_read <- function(dset_name = NULL, dset_path = NULL,
                       age_row = NULL, first_datarow = NULL) {
-
-  ## Set variables
-  # rm(list = ls())
-  # dset_name = "AVG0702"
-  # dset_path = "../data_raw/AVG0702_diatom_counts.csv"
-  # age_row = 6
-  # first_datarow = 9
-
 
   ## Loads the Metadata (sample depths and ages) ------------------------------
   d <- read.csv(dset_path, nrows = first_datarow - 1, header = T)

@@ -184,7 +184,7 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
                              fill = change_mean > 0), alpha = 0.8) +
     ggplot2::labs(x = age_scale, y = "Percentage change") +
     ggplot2::scale_fill_manual(name = "",
-                               values = c( "red", "green"),
+                               values = c("#5e3c99", "#e66101"),
                                labels = c("Decrease", "Increase")) +
     ggplot2::geom_abline(mapping = ggplot2::aes(slope = 0, intercept = 0))
 
