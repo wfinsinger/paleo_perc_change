@@ -1,18 +1,22 @@
-
-# load("./data_out/01_AVG0702_RoC_pollen.rda")
+# Loads the pollen data set from Lago Grande di Avigliana (Finsinger et al.,
+# 2006),
+# performs exploratory data analysis, and
+# the rate-of-change analysis (RoC) using the 'RRatepoll' R package.
+# The output data is saved to the 'data_out' folder,
+#   figures are saved in the 'figures_out' folder.
 
 rm(list = ls())
 
-# Load libraries & tools ------------------------------------------------------
+# Load libraries, tools, and data ---------------------------------------------
 
-### Libraries -----------------------------------------------------------------
+### Load libraries ------------------------------------------------------------
 library(rioja)
 library(dplyr)
 #devtools::install_github("HOPE-UIB-BIO/R-Ratepol-package")
 library(RRatepol)
 
 
-### R functions from source ---------------------------------------------------
+### Load R functions from source ----------------------------------------------
 
 ## New R functions
 source("./R/neotoma_explorer_perc.r")
@@ -27,7 +31,6 @@ source("./R/util_check_col_names.r")
 source("./R/util_check_vector_values.r")
 source("./R/util_paste_as_vector.r")
 source("./R/util_output_comment.r")
-
 
 
 # Load data -------------------------------------------------------------------
@@ -45,22 +48,21 @@ rm(dset_pollen)
 
 # Filter data -----------------------------------------------------------------
 
-
 ## Remove samples with pollen sums < 200 terrestrial pollen grains
 p_counts <- dset$counts %>% dplyr::select(which(
-    dset$taxa$element == "pollen" | dset$taxa$element == "spore"))
+  dset$taxa$element == "pollen" | dset$taxa$element == "spore"))
 p_counts_sum <- rowSums(p_counts[2:dim(p_counts)[2]])
 summary(p_counts_sum)
 ind_sample_remove <- which(p_counts_sum < 200)
 
 if (length(ind_sample_remove) > 0) {
-dset$list_ages$ages <- dset$list_ages$ages[-ind_sample_remove, ]
-dset$list_ages$age_range <- dset$list_ages$age_range[-ind_sample_remove, ]
-dset$labo <- dset$labo[-ind_sample_remove + 5, ]
-dset$counts <- dset$counts[-ind_sample_remove, ]
-rownames(dset$list_ages$ages) <- NULL
-rownames(dset$list_ages$age_range) <- NULL
-rownames(dset$counts) <- NULL
+  dset$list_ages$ages <- dset$list_ages$ages[-ind_sample_remove, ]
+  dset$list_ages$age_range <- dset$list_ages$age_range[-ind_sample_remove, ]
+  dset$labo <- dset$labo[-ind_sample_remove + 5, ]
+  dset$counts <- dset$counts[-ind_sample_remove, ]
+  rownames(dset$list_ages$ages) <- NULL
+  rownames(dset$list_ages$age_range) <- NULL
+  rownames(dset$counts) <- NULL
 }
 
 p_counts <- dset$counts %>% dplyr::select(which(

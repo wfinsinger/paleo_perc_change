@@ -1,6 +1,21 @@
 #' Calculate percentages for palaeoecological assemblage data
 #'
+#' @param d_in an object (list) returned from the nxpl_read() function.
+#' @param d_sum Specifies the group of taxa upon which percentages are going tp
+#'              be calculated. By default, \code{d_sum = NULL}, in which case
+#'              the percentages are calculated relative to all taxa present in
+#'              the data set. Instead, with \code{d_sum = "terrestrial"},
+#'              percentages are calculated relative to the trees and shrubs
+#'              and the upland herbs ('TRSH' and 'UPHE', respectively) groups.
+#' @param taxa_excl Optional. Specifies the taxa that should be excluded from
+#'                  the data set prior to calculating percentages.
+#' @param plotit Logical. If \code{plotit = TRUE} a plot is returned.
+#' @param x_lim Optional. Specifies the range of the x-axis scale.
+#' @param y_lim Optional. Specifies the range of the y-axis scale.
+#'
 #' @details requires the output from the nxpl_read() function.
+#'
+#' @returns a list
 #'
 #' @author Walter Finsinger
 
@@ -32,7 +47,6 @@ nxpl_perc <- function(d_in = NULL, d_sum = NULL, taxa_excl = NULL, plotit = T,
         (d_in$taxa$group == "TRSH" | d_in$taxa$group == "UPHE") &
           d_in$taxa$element == "pollen")) %>%
         dplyr::select(-one_of(taxa_excl))
-
     }
   }
 
@@ -74,14 +88,14 @@ nxpl_perc <- function(d_in = NULL, d_sum = NULL, taxa_excl = NULL, plotit = T,
     par(mfrow = c(1,1), mar = c(5,5,2,2), oma = c(1,1,1,1))
     plot(age, d_trsh, type = "l", lwd = 2,
          xlim = x_lim, ylim = y_lim,
-         xlab = d_in$AgeUnits, ylab = "Pollen (%)")
+         xlab = d_in$age_units, ylab = "Pollen (%)")
     lines(age, d_uphe, lwd = 2, col = "red")
     legend("topleft", legend = c("TRSH", "UPHE"),
            col =  c("black", "red"), lwd = c(2,2), bty = "n")
   }
 
-  return(list(Dataset = d_in$Dataset, list_ages = d_in$list_ages,
-              AgeUnits = d_in$AgeUnits, taxa = d_taxa, counts = d_counts2,
+  ## Return output list -------------------------------------------------------
+  return(list(dataset = d_in$dataset, list_ages = d_in$list_ages,
+              age_units = d_in$age_units, taxa = d_taxa, counts = d_counts2,
               perc = d_perc, grps = d_grps))
-
 }

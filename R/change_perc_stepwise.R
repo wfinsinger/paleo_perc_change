@@ -1,29 +1,35 @@
 #' Percentage change per unit time with irregularly spaced observations
 #'
-#'
 #' @param data_source_ecolind a data.frame with 2 columns: sample_id (chr), the
 #'                      variable being used (num).
 #' @param data_source_ages a data.frame with 3 columns: sample_id (chr), sample
 #'                  depth (num), and sample age (num).
 #' @param ecolind_name optional. Character describing the ecological indicator.
-#' @param age_scale Required. A character describing the age scale. Currently two
-#'            options are available: "CE years" (default) and "calBP".
-#' @param change_by Required. Specifies the time interval (in years) over which the
-#'            percentage change values will be averaged. By default, the data
-#'            points are grouped into working units (WUs) of 10 years (thus:
-#'            change_by = 10), which gives per-decade rate of percentage
-#'            change.
+#' @param age_scale Required. A character describing the age scale. Currently
+#'                  only "CE years" (default) is available.
+#' @param change_by Required. Specifies the time interval (in years) over which
+#'            the percentage change values will be averaged. By default, the
+#'            data points are grouped into working units (WUs) of 10 years
+#'            (thus, change_by = 10), which gives per-decade rate of percentage
+#'            change between consecutive time intervals.
 #' @param n_shift numerical (integer). Determines the number of shifts to set up
-#'            the WUs. By default, n_shift = 0, which implies that only one set
-#'            of WUs will be created.
+#'            the WUs. By default, \code{n_shift = 0}, which implies that only
+#'            one set of WUs will be created.
 #' @param time_standardisation If specified, the rate of change is referred
 #'            relative to the number of years given by the argument 'change_by'.
-#'            With time_standardisation = NULL (default), the rates of change
-#'            are calculated relative to the time interval between the
+#'            With time_standardisation = NULL (default), the rate of change
+#'            is calculated relative to the time interval between the
 #'            randomly selected samples of two adjacent WUs.
 #' @param plotit logical. Determines if a plot is returned to the environment.
-#'          By default, plotit = TRUE.
-#'
+#'               By default, plotit = TRUE.
+#' @param n_rand Integer. Specifies the number of times a random sample is
+#'                selected from each of the WUs in each set of WUs.
+#'                By default, \code{n_rand = 99}.
+#' @param add_whiskers Logical. Determines if whiskers illustrating the
+#'                      variability of the data are added to the plot. By
+#'                      default, \code{add_whiskers = TRUE}.
+#' @param y_lim Optional. A vector to specify the y-axis range limits. By
+#'                      default, \code{y_lim = NULL}.
 #'
 #' @author Walter Finsinger
 
@@ -52,16 +58,18 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
   # Make WUs: 'group samples by time interval' as of 'change_by' --------------
 
   ### Define WUs and shifted WUs ----------------------------------------------
-  shifts <- seq(from = 0, to = change_by - 1, by = change_by/(n_shift + 1))
+  shifts <- seq(from = 0,
+                to = change_by - 1,
+                by = change_by/(n_shift + 1))
   t_want <- seq(from = min(v_ages) - min(v_ages) %% change_by,
-                to = max(v_ages) - max(v_ages) %% change_by, by = change_by)
+                to = max(v_ages) - max(v_ages) %% change_by,
+                by = change_by)
 
   ### Loop through the shifted WUs (if n_shift > 0) ---------------------------
   df_list <- list()
   mc_gather <- list()
 
  for (p in 1:length(shifts)) {
-    # p = 1
     t_want_p <- sort(t_want + shifts[p])
     df <- m %>%
       dplyr::mutate(time_interval_start =
@@ -83,7 +91,7 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
 
 
 
-    ### Calculate percentage rate of change between consecutive bins ----------
+    ### Calculate percentage change between consecutive bins ------------------
 
     #### Take n_rand times a random sample from each WU -----------------------
 
@@ -128,7 +136,6 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
       df_list[[i]] <- df_i$roc_change_by_perc
     }
 
-
     ### Gather data generated in the loop -------------------------------------
     mc_result <- data.frame(simplify2array(df_list))
 
@@ -159,7 +166,6 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
     mc_summary$previous_bin_start <- mc_summary$bin_start - change_by
 
     mc_gather[[p]] <- mc_summary
-
  }
 
   ## Gather data into one data frame
@@ -188,7 +194,7 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
                                labels = c("Decrease", "Increase")) +
     ggplot2::geom_abline(mapping = ggplot2::aes(slope = 0, intercept = 0))
 
-  if (!is.null(y_lim)) {
+  if (any(!is.null(y_lim))) {
     pl <- pl +
       ggplot2::ylim(y_lim)
   }
@@ -201,7 +207,6 @@ change_perc_stepwise <- function(data_source_ecolind = NULL,
                                ymax = upper_75th,
                                y = change_median), color = "grey")
   }
-
   print(pl)
 
   # END -----------------------------------------------------------------------

@@ -2,7 +2,8 @@
 ##
 ## Modified from the "fc_plot_RoC_sequence()" function that is included in the
 ## RRatepol R package (Mottl et al., 2021). The modified function allows
-## plotting the rate-of-change record along another ecological indicator record (identified with the argument "cvar"), and extends the age scale from the
+## plotting the rate-of-change record along another ecological indicator record
+## (identified with the argument "cvar"), and extends the age scale from the
 ## selected age_threshold to the min(age).
 ## It also allows setting the age scale units, with two options for the
 ## argument "age_scale":

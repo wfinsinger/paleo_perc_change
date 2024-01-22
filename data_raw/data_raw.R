@@ -1,5 +1,7 @@
-rm(list = ls())
+# File name: data_raw.r
+# Loads raw data and saves it in the "./data_in/" folder as *.RData format.
 
+rm(list = ls())
 
 # Load new R function ---------------------------------------------------------
 source("../R/neotoma_explorer_read.r")
@@ -43,7 +45,7 @@ dset_pollen <- nxpl_read(dset_name = "AVG0702",
 ## - transform 'Calibrated radiocarbon years BP' to 'CE years'
 dset_pollen$list_ages$ages$age[is.na(dset_pollen$list_ages$ages$age)] <- 0
 dset_pollen$list_ages$ages$age <- 1950 - dset_pollen$list_ages$ages$age
-dset_pollen$AgeUnits <- "CE years"
+dset_pollen$age_units <- "CE years"
 
 
 
@@ -79,7 +81,7 @@ di_tp <- read.csv("AVG-TP-LOG.csv")
 ## Modify di_tp:
 di_tp <- dplyr::rename(di_tp, "depth" = "Depth..cm.")
 di_tp <- dplyr::rename(di_tp, "CE_years" = "Age.yrs.AD")
-di_tp <- dplyr::rename(di_tp, "TP (log)" = "TP")
+di_tp <- dplyr::rename(di_tp, "di_tp" = "TP")
 # check for occurrence of NA values
 if (sum(!complete.cases(di_tp)) > 0) {
   print("Warning: some rows contain missing values")

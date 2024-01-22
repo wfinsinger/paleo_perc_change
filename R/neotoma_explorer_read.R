@@ -1,4 +1,16 @@
-#' Read a dataset saved as *.csv file using the NeotomaExplorer App
+#' Read a dataset saved as *.csv from the NeotomaExplorer App
+#'
+#' @param dset_name Optional. A character string specifying the name of the
+#'                  dataset.
+#' @param dset_path Required. Specifies the path to the *.csv file.
+#' @param age_row Required, numerical. Specifies in which row of the input
+#'                *.csv file the sample ages are to be found.
+#' @param first_datarow Required, numerical. Specifies in which row of the
+#'                      input *.csv file the actual count data starts. If the
+#'                      Neotoma dataset contains only one chronology, the
+#'                      \code{first_datarow = age_row +1}.
+#'
+#' @returns The function returns a list
 #'
 #' @author Walter Finsinger
 
@@ -20,7 +32,7 @@ nxpl_read <- function(dset_name = NULL, dset_path = NULL,
   depth <- as.numeric(d[which(d$name == "Depth"), 6:dim(d) [2]])
   depth[is.na(depth) == T] <- 0 # as top samples identified as "modern"
 
-  AgeUnits <- d[age_row, 2]
+  age_units <- d[age_row, 2]
 
   ages <- d[age_row, 6:dim(d) [2]]
   ages <- unlist(strsplit(as.character(ages), split = "/"))
@@ -67,9 +79,9 @@ nxpl_read <- function(dset_name = NULL, dset_path = NULL,
 
 
   ## Prepare output -----------------------------------------------------------
-  output <- list(Dataset = dset_name,
+  output <- list(dataset = dset_name,
                  list_ages = list(ages = ages, age_range = age_range),
-                 AgeUnits = AgeUnits, taxa = taxa, labo = labo,
+                 age_units = age_units, taxa = taxa, labo = labo,
                  counts = counts)
   return(output)
 }

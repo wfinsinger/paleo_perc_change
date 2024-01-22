@@ -1,18 +1,22 @@
-
-# load("./data_out/02_AVG0702_RoC_diatoms.rda")
+# Loads the diatom data set from Lago Grande di Avigliana (Finsinger et al.,
+# 2006),
+# performs exploratory data analysis, and
+# the rate-of-change analysis (RoC) using the 'RRatepoll' R package.
+# The output data is saved to the 'data_out' folder,
+#   figures are saved in the 'figures_out' folder.
 
 rm(list = ls())
 
-# Load data & tools -----------------------------------------------------------
+# Load libraries, tools, and data ---------------------------------------------
 
-### Libraries -----------------------------------------------------------------
+### Load libraries ------------------------------------------------------------
 library(rioja)
 library(dplyr)
 #devtools::install_github("HOPE-UIB-BIO/R-Ratepol-package")
 library(RRatepol)
 
 
-### R functions from source ---------------------------------------------------
+### Load R functions from source ----------------------------------------------
 
 ## New R functions
 source("./R/neotoma_explorer_perc.r")
@@ -37,7 +41,6 @@ dset <- dset_diatoms
 
 ##### Load AVG0702 DI-TP ------------------------------------------------------
 load("./data_in/di_tp.RData")
-
 
 
 # Plot resolution of the record -----------------------------------------------
@@ -71,7 +74,6 @@ rioja::strat.plot(dset_perc$perc[ ,40:60],
                   scale.percent = TRUE,
                   y.rev = FALSE, plot.poly = TRUE, exag = TRUE, exag.mult = 5,
                   cex.xlabel = 0.7)
-
 
 
 # Plot synthetic diatom % diagram ---------------------------------------------
@@ -121,7 +123,6 @@ time.standardisation <- 50
 
 
 ### RoC RRatepol - All taxa ---------------------------------------------------
-
 dset_roc <-
   RRatepol::estimate_roc(data_source_community = dset_perc$counts,
                             data_source_age = dset_perc$list_ages$ages[ ,c(1,3)],
@@ -160,9 +161,8 @@ fc_plot_RoC_seq4(dset_peak, age_threshold = NULL, age_scale = "CE",
 dev.off()
 
 
-# Output - save data ---------------------------------------------------------
-
-di_tp_exp <- data.frame(dset_perc$counts$sample_id, di_tp$`TP (log)`)
+# Output - save data ----------------------------------------------------------
+di_tp_exp <- data.frame(dset_perc$counts$sample_id, di_tp$di_tp)
 names(di_tp_exp) <- c("sample_id", "di_tp")
 save(di_tp_exp, file = "./data_out/02_di_tp.rds")
 
@@ -170,6 +170,5 @@ dset_perc_ages <- dset_perc$list_ages$ages
 save(dset_perc_ages, file = "./data_out/02_di_tp_ages.rds")
 
 save.image("./data_out/02_AVG0702_RoC_diatoms.rda")
-
 
 ## END R script 02 ------------------------------------------------------------
