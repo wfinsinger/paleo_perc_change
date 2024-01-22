@@ -1,23 +1,22 @@
-# First, the rate of change shows how quickly an ecological indicator is
-# changing over time;
-# the average per decade change in the indicator is expressed as
-# - a percentage of the estimated value for 1970 (or, if later, for the
-# beginning of the timeseries).
-
-# Second, the current status is shown as
-# - a percentage of the inferred or estimated natural baseline level (i.e.,
-# the value in a pristine or at least much less impacted – e.g.,
-# pre-industrial–world), showing how much remains (see Figures 2.2.8–2.2.20).
-
-
+# Calculates and produces plots showing the:
+# 1) the rate of change of the indicators as a percentage of change
+#   per-unit-time to show how quickly the system changed throughout and its
+#   direction;
+#
+# 2) the percentage of the inferred or estimated reference level (such as the
+#   value in a pristine or at least much less impacted world, or the value in a
+#   more impacted world) showing how much there is after, and if applicable
+#   also before, the reference period. Thus, overall illustrating the status
+#   relative to the reference period (or the reference value); and
+# - if a reference period was specified, also the rate of change as the average
+#   per unit-time (here a decade) percentage change in the indicator relative
+#   to the reference period (or reference value), showing how quickly an
+#   ecological indicator has changed over time since the reference period.
 
 rm(list = ls())
 
 # Load libraries & tools ------------------------------------------------------
 library(dplyr)
-#devtools::install_github("HOPE-UIB-BIO/R-Ratepol-package")
-# library(RRatepol)
-# example_data <- RRatepol::example_data
 source("./R/change_perc_baseline.r")
 source("./R/change_perc_stepwise.r")
 
@@ -108,48 +107,59 @@ ditp_stepwise <- change_perc_stepwise(data_source_ecolind = tp,
 
 
 
-# Calculate percentage of the inferred or estimated baseline level ------------
+# Calculate changes relative to the reference period (or ref. level) ----------
 
-## Tree-cover % change relative to 1970-1979 CE yrs:
+## Tree-cover change relative to 1970-1979 CE yrs:
 pdf("./figures_out/Figure_3e_trsh_1970-1979.pdf",
     height = 5, fonts = "Helvetica")
-trsh_baseline <- change_perc_baseln(data_source_ecolind = trsh2,
-                                          data_source_ages = trsh_ages,
-                                          baseln_interval = c(1970, 1979),
-                                          baseln_estimated = NULL,
-                                          bin_size = 10,
-                                          ecolind_name = "Arboreal pollen",
-                                          desired_direction = "increase",
-                                          age_scale = "CE years",
-                                          plotit = TRUE)
+trsh_relto_70s <- change_perc_relto(data_source_ecolind = trsh2,
+                                   data_source_ages = trsh_ages,
+                                   reference_interval = c(1970, 1979),
+                                   reference_level_estimated = NULL,
+                                   bin_size = 10,
+                                   ecolind_name = "Arboreal pollen",
+                                   desired_direction = "increase",
+                                   age_scale = "CE years",
+                                   plotit = TRUE)
 dev.off()
 
 
-## Tree-cover % change relative to 1940-1950 CE yrs:
+## Tree-cover change relative to 1940-1950 CE yrs:
 pdf("./figures_out/Figure_A2_trsh_1940-1950.pdf", height = 5)
-trsh_baseline <- change_perc_baseln(data_source_ecolind = trsh2,
-                                    data_source_ages = trsh_ages,
-                                    baseln_interval = c(1940, 1950),
-                                    baseln_estimated = NULL,
+trsh_relto_40s <- change_perc_relto(data_source_ecolind = trsh2,
+                                   data_source_ages = trsh_ages,
+                                   reference_interval = c(1940, 1950),
+                                   reference_level_estimated = NULL,
+                                   bin_size = 10,
+                                   ecolind_name = "Arboreal pollen",
+                                   desired_direction = "increase",
+                                   age_scale = "CE years",
+                                   plotit = TRUE)
+dev.off()
+
+## Tree-cover change relative to an arbitrarily chosen value of 60%:
+trsh_relto_60perc <- change_perc_relto(data_source_ecolind = trsh2,
+                                      data_source_ages = trsh_ages,
+                                      reference_interval = NULL,
+                                      reference_level_estimated = 60,
+                                      reference_level_desc = "% tree cover",
+                                      bin_size = 10,
+                                      ecolind_name = "Arboreal pollen",
+                                      desired_direction = "increase",
+                                      age_scale = "CE years",
+                                      plotit = TRUE)
+
+## Di-TP change relative to 1800-1899 CE yrs:
+pdf("./figures_out/Figure_3f_ditp_1800-1899.pdf", height = 5)
+ditp_relto_19th <- change_perc_relto(data_source_ecolind = tp,
+                                    data_source_ages = tp_ages,
+                                    reference_interval = c(1800, 1899),
+                                    reference_level_estimated = NULL,
                                     bin_size = 10,
-                                    ecolind_name = "Arboreal pollen",
-                                    desired_direction = "increase",
+                                    ecolind_name = "DI-TP",
+                                    desired_direction = "decrease",
                                     age_scale = "CE years",
                                     plotit = TRUE)
-dev.off()
-
-
-## Di-TP % change relative to 1800-1899 CE yrs:
-pdf("./figures_out/Figure_3f_ditp_1800-1899.pdf", height = 5)
-ditp_baseline <- change_perc_baseln(data_source_ecolind = tp,
-                                          data_source_ages = tp_ages,
-                                          baseln_interval = c(1800, 1899),
-                                          baseln_estimated = NULL,
-                                          bin_size = 10,
-                                          ecolind_name = "DI-TP",
-                                          desired_direction = "decrease",
-                                          age_scale = "CE years",
-                                          plotit = TRUE)
 dev.off()
 
 
