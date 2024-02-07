@@ -1,3 +1,6 @@
+<a href="https://doi.org/10.5281/zenodo.10075147"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.10075147.svg" alt="DOI"></a>
+
+
 This repository contains data and code necessary to reproduce the results shown 
 in the manuscript "Rates of palaeoecological change can inform ecosystem 
 restoration" (doi: https://doi.org/10.5194/egusphere-2023-2623).
