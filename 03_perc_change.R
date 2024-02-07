@@ -17,7 +17,7 @@ rm(list = ls())
 
 # Load libraries & tools ------------------------------------------------------
 library(dplyr)
-source("./R/change_perc_baseline.r")
+source("./R/change_perc_relto.r")
 source("./R/change_perc_stepwise.r")
 
 

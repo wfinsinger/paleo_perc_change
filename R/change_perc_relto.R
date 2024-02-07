@@ -46,6 +46,10 @@
 #' @plotit logical. Determines if a plot is returned. By default,
 #'          plotit = TRUE.
 #'
+#' @details The colors of the returned plot were selected from the 'vik'
+#'          discrete palette (as of: Crameri, F. (2018), Scientific colour
+#'          maps, Zenodo, doi:10.5281/zenodo.1243862).
+#'
 #' @author Walter Finsinger
 
 change_perc_relto <- function(data_source_ecolind = NULL,
@@ -173,9 +177,9 @@ change_perc_relto <- function(data_source_ecolind = NULL,
       ggplot2::geom_col(ggplot2::aes(x = v_ages,
                                      y = change_percentage,
                                      fill = direction)) +
-      ggplot2::scale_fill_manual(name = "", values = c("desired" = "green",
-                                                       "reference" = "grey",
-                                                       "undesired" = "red")) +
+      ggplot2::scale_fill_manual(name = "", values = c("desired" = "#034481",
+                                                       "reference" = "#ECE5E0",
+                                                       "undesired" = "#BA5E2A")) +
       ggplot2::labs(x = age_scale, y = "% change") +
       ggplot2::geom_abline(mapping = ggplot2::aes(slope = 0, intercept = 0)) +
       ggplot2::geom_line(data = rate_change_bins_post_ref_period,
@@ -196,8 +200,8 @@ change_perc_relto <- function(data_source_ecolind = NULL,
       ggplot2::geom_col(ggplot2::aes(x = v_ages,
                                      y = change_percentage,
                                      fill = direction)) +
-      ggplot2::scale_fill_manual(name = "", values = c("desired" = "green",
-                                                       "undesired" = "red")) +
+      ggplot2::scale_fill_manual(name = "", values = c("desired" = "#034481",
+                                                       "undesired" = "#BA5E2A")) +
       ggplot2::labs(x = age_scale, y = "% change") +
       ggplot2::geom_abline(mapping = ggplot2::aes(slope = 0, intercept = 0))
   }
