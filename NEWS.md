@@ -1,4 +1,12 @@
 
+# paleo_perc_change v1.0.1
+
+- changed the colors of the bar plots returned by the change_perc_relto() 
+  function. Now uses colors from the diverging & Colour-vision-deficiency (CVD)
+  friendly color palette 'vik' (Crameri, F. (2018), Scientific colour maps, 
+  Zenodo, doi:10.5281/zenodo.1243862).
+
+
 # paleo_perc_change v1.0.0
 
 - changed names of arguments (now they refer to 'reference period' and to the
